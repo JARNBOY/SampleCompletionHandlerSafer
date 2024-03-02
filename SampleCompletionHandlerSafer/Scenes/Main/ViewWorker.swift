@@ -14,15 +14,37 @@ import UIKit
 
 protocol ViewWorkerInterface {
     func generateListURL(startIndex: Int, endIndex: Int, success:([String]) -> Void)
+    func requestNews(completion: @escaping (NewsModel?, ErrorType?) -> Void)
 }
 
 class ViewWorker
 {
+    var service: NewsService?
+    
+    init(with aService: NewsService) {
+        service = aService
+    }
+    
     func generateListURL(startIndex: Int, endIndex: Int, success:([String]) -> Void) {
         let listImageURL = (startIndex...endIndex).map {
             getURLSpecificImageLoad(id: $0)
         }
         success(listImageURL)
+    }
+    
+    func requestNews(completion: @escaping (NewsModel?, ErrorType?) -> Void) {
+        let countryParam: String = "country=us"
+        let apiKeyParam: String = "apiKey=0bfb7217d29740c3a8ca13fda1c95a49" //, "apiKey=55c250f06e1144c29a3ec4d2530adbe5"
+        let page: Int = 1
+        let url: String =  "https://newsapi.org/v2/top-headlines?\(countryParam)&\(apiKeyParam)&page=\(page)"
+        service?.requestNews(url: url, completion: { result in
+            switch result {
+            case .success(let responseSuccess):
+                completion(responseSuccess, nil)
+            case .failure(let error):
+                completion(nil, error)
+            }
+        })
     }
 }
 

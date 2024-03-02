@@ -86,6 +86,7 @@ enum ErrorType: LocalizedError, Equatable {
     case failedUnknown
     case failedLimitRequest
     case failedRequest(httpResponse: HTTPURLResponse)
+    case failedRequestSomething
     
     var errorDescription: String? {
         switch self {
@@ -98,6 +99,8 @@ enum ErrorType: LocalizedError, Equatable {
             return "Failed to Invalid URL"
         case .failedToResponse:
             return "Failed to response"
+        case .failedRequestSomething:
+            return "Failed to request API request failed"
         case .failedRequest(httpResponse: let httpResponse):
             return "Failed to request API request failed with status code \(httpResponse.statusCode) : \(httpResponse.description)"
         case .failedNilData:

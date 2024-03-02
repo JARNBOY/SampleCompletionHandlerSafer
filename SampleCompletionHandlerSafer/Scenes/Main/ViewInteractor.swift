@@ -26,19 +26,32 @@ protocol ViewDataStore
 class ViewInteractor: ViewBusinessLogic, ViewDataStore
 {
     var presenter: ViewPresentationLogic?
-    var worker: ViewWorker = ViewWorker()
+    var worker: ViewWorker = ViewWorker(with: DailyNewsService())
     //var name: String = ""
     
     // MARK: Do something
     
-    func feedImagesPicsum()
-    {
+    func feedImagesPicsum() {
         let startIndex = 0
         let endIndex = 12
         worker.generateListURL(startIndex: startIndex, endIndex: endIndex) { imageUrls in
             print(imageUrls)
             let response = View.FetchImageURL.Response(startIndex: startIndex, endIndex: endIndex, urls: imageUrls)
             presenter?.presentImagesPicsum(response: response)
+        }
+    }
+    
+    func feedNews() {
+        worker.requestNews { [weak self] newsModel, errorType in
+            guard
+                errorType == nil
+            else {
+                //Display error each type
+                print(errorType?.errorDescription ?? "")
+                return
+            }
+            
+            // TODO: presentSomething
         }
     }
     

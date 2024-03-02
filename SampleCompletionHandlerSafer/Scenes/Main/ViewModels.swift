@@ -30,6 +30,16 @@ enum View
         }
     }
     
+    enum NewsFeed {
+        struct Request { }
+        struct Response {
+            let news: NewsModel?
+        }
+        struct ViewModel {
+            let articles: [Article]?
+        }
+    }
+    
     struct DisplayModel {
         var isHide: Bool?
     }

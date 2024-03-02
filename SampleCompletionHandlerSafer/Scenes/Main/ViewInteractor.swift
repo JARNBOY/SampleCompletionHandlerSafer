@@ -16,6 +16,7 @@ protocol ViewBusinessLogic
 {
     func feedImagesPicsum()
     func setStartText()
+    func feedNews()
 }
 
 protocol ViewDataStore
@@ -28,9 +29,9 @@ class ViewInteractor: ViewBusinessLogic, ViewDataStore
     var presenter: ViewPresentationLogic?
     var worker: ViewWorker = ViewWorker(with: DailyNewsService())
     //var name: String = ""
-    
+
     // MARK: Do something
-    
+
     func feedImagesPicsum() {
         let startIndex = 0
         let endIndex = 12
@@ -40,21 +41,23 @@ class ViewInteractor: ViewBusinessLogic, ViewDataStore
             presenter?.presentImagesPicsum(response: response)
         }
     }
-    
+
     func feedNews() {
         worker.requestNews { [weak self] newsModel, errorType in
-            guard
-                errorType == nil
-            else {
-                //Display error each type
-                print(errorType?.errorDescription ?? "")
-                return
+            DispatchQueue.main.async {
+                guard
+                    errorType == nil
+                else {
+                    //Display error each type
+                    print(errorType?.errorDescription ?? "")
+                    return
+                }
+                let response = View.NewsFeed.Response(news: newsModel)
+                self?.presenter?.presentFeedNews(response: response)
             }
-            
-            // TODO: presentSomething
         }
     }
-    
+
     func setStartText() {
         presenter?.presentSetStartText()
     }

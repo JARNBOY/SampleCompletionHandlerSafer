@@ -6,7 +6,7 @@ target 'SampleCompletionHandlerSafer' do
   use_frameworks!
 
   # Pods for SampleCompletionHandlerSafer
-  pod 'Alamofire'
+  pod 'SDWebImage'
 
   target 'SampleCompletionHandlerSaferTests' do
     inherit! :search_paths

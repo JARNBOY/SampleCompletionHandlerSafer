@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="59" width="393" height="639"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="vRq-40-QUB">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="639"/>
+                                        <rect key="frame" x="16" y="0.0" width="361" height="639"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Kkm-m2-LII">
                                             <size key="itemSize" width="128" height="128"/>
@@ -44,8 +44,8 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="vRq-40-QUB" secondAttribute="trailing" id="6uy-pz-2OX"/>
-                                    <constraint firstItem="vRq-40-QUB" firstAttribute="leading" secondItem="NO7-li-5Lt" secondAttribute="leading" id="Cv4-Y3-f3M"/>
+                                    <constraint firstAttribute="trailing" secondItem="vRq-40-QUB" secondAttribute="trailing" constant="16" id="6uy-pz-2OX"/>
+                                    <constraint firstItem="vRq-40-QUB" firstAttribute="leading" secondItem="NO7-li-5Lt" secondAttribute="leading" constant="16" id="Cv4-Y3-f3M"/>
                                     <constraint firstItem="jsm-1y-lmg" firstAttribute="centerX" secondItem="NO7-li-5Lt" secondAttribute="centerX" id="H2z-Gf-74r"/>
                                     <constraint firstAttribute="bottom" secondItem="jsm-1y-lmg" secondAttribute="bottom" constant="30" id="ibN-mS-ZPH"/>
                                     <constraint firstAttribute="bottom" secondItem="vRq-40-QUB" secondAttribute="bottom" id="pdY-vP-TCd"/>
@@ -81,6 +81,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="NO7-li-5Lt" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="4mp-Mq-LKI"/>
                             <constraint firstItem="FK6-jU-nGj" firstAttribute="top" secondItem="NO7-li-5Lt" secondAttribute="bottom" id="Ogf-Ie-maN"/>
                             <constraint firstItem="NO7-li-5Lt" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Raq-ok-cBz"/>
                             <constraint firstItem="FK6-jU-nGj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Rdg-C3-nmx"/>

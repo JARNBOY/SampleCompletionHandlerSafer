@@ -9,8 +9,9 @@ import UIKit
 
 protocol ViewDisplayLogic: AnyObject 
 {
-    func displayImagesPicsum(viewModel: View.Something.ViewModel)
+    func displayImagesPicsum(viewModel: View.FetchImageURL.ViewModel)
     func displaySetStartText(viewModel: View.DisplayModel)
+    func displayFeedNews(viewModel: View.NewsFeed.ViewModel)
 }
 
 class ViewController: UIViewController, ViewDisplayLogic 
@@ -22,6 +23,7 @@ class ViewController: UIViewController, ViewDisplayLogic
     var router: (NSObjectProtocol & ViewRoutingLogic & ViewDataPassing)?
     
     private var imageURLs: [String] = []
+    private var articles: [Article] = []
     
     let fileImageItemReuseableIdentifier = "ImageItemCollectionViewCell"
     // MARK: Object lifecycle
@@ -59,7 +61,6 @@ class ViewController: UIViewController, ViewDisplayLogic
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        initialView()
         setupCollectionView()
     }
     // MARK: View
@@ -74,30 +75,29 @@ class ViewController: UIViewController, ViewDisplayLogic
     
     // MARK: Button Action
     @IBAction func didTapStartGetImage(_ sender: UIButton) {
-        self.interactor?.setStartText()
+        let request = View.NewsFeed.Request()
+        interactor?.feedNews()
     }
     
     // MARK: Functional Screen Logic
-    
-    func initialView()
-    {
-        let request = View.Something.Request()
-        interactor?.doSomething(request: request)
-    }
-    
     func getImagesPicsum() {
-//        interactor?.getImagesPicsum()
+        interactor?.feedImagesPicsum()
     }
     
     // MARK: ViewDisplayLogic
     
-    func displayImagesPicsum(viewModel: View.Something.ViewModel)
+    func displayImagesPicsum(viewModel: View.FetchImageURL.ViewModel)
     {
         // Load a batch of images starting from the given index
         self.imageURLs += viewModel.urls
-        imagesCollectionView.reloadData()
+        imagesPicsumCollectionView.reloadData()
     }
     
+    func displayFeedNews(viewModel: View.NewsFeed.ViewModel) {
+        self.interactor?.setStartText()
+        self.articles = viewModel.articles ?? []
+        imagesPicsumCollectionView.reloadData()
+    }
     
     func displaySetStartText(viewModel: View.DisplayModel)
     {
@@ -105,18 +105,19 @@ class ViewController: UIViewController, ViewDisplayLogic
     }
 }
 
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return self.articles.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: fileImageItemReuseableIdentifier, for: indexPath as IndexPath) as! ImageItemCollectionViewCell
+        cell.setupConfigureCell(article: self.articles[indexPath.row])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = self.view.bounds.width
+        let width = collectionView.bounds.width
         let height = CGFloat(300)
         return CGSize(width: width, height: height)
     }

@@ -14,21 +14,32 @@ import UIKit
 
 protocol ViewPresentationLogic
 {
-    func presentImagesPicsum(response: View.Something.Response)
+    func presentImagesPicsum(response: View.FetchImageURL.Response)
     func presentSetStartText()
+    func presentFeedNews(response: View.NewsFeed.Response)
 }
 
 class ViewPresenter: ViewPresentationLogic
 {
     weak var viewController: ViewDisplayLogic?
     
-    // MARK: Do something
+    // MARK: Present request
     
-    func presentImagesPicsum(response: View.Something.Response)
+    func presentImagesPicsum(response: View.FetchImageURL.Response)
     {
-        let viewModel = View.Something.ViewModel()
+        let viewModel = View.FetchImageURL.ViewModel(startIndex: response.startIndex, 
+                                                     endIndex: response.endIndex,
+                                                     urls: response.urls)
         viewController?.displayImagesPicsum(viewModel: viewModel)
     }
+    
+    func presentFeedNews(response: View.NewsFeed.Response)
+    {
+        let viewModel = View.NewsFeed.ViewModel(articles: response.news?.articles)
+        viewController?.displayFeedNews(viewModel: viewModel)
+    }
+    
+    // MARK: Do something
     
     func presentSetStartText()
     {

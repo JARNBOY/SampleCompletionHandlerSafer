@@ -43,13 +43,13 @@ class ViewInteractor: ViewBusinessLogic, ViewDataStore
     }
 
     func feedNews() {
-        worker.requestNews { [weak self] newsModel, errorType in
+        worker.requestNews { [weak self] newsModel, error in
             DispatchQueue.main.async {
                 guard
-                    errorType == nil
+                    error == nil
                 else {
                     //Display error each type
-                    print(errorType?.errorDescription ?? "")
+                    print(error?.localizedDescription ?? "")
                     return
                 }
                 let response = View.NewsFeed.Response(news: newsModel)

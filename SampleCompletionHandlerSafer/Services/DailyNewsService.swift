@@ -8,13 +8,13 @@
 import Foundation
 
 protocol NewsService {
-    func requestNews(url: String, completion: @escaping (Result<NewsModel, ErrorType>) -> Void)
-    func requestSearchNews(url: String, completion: @escaping (Result<NewsModel, ErrorType>) -> Void)
+    func requestNews(url: String, completion: @escaping (Result<NewsModel, Error>) -> Void)
+    func requestSearchNews(url: String, completion: @escaping (Result<NewsModel, Error>) -> Void)
 }
 
 class DailyNewsService: NewsService {
     
-    func requestNews(url: String, completion: @escaping (Result<NewsModel, ErrorType>) -> Void) {
+    func requestNews(url: String, completion: @escaping (Result<NewsModel, Error>) -> Void) {
         APIManager.shared.request(endpoint: url, method: .get, headers: nil, body: nil) { result in
             switch result {
             case .success(let data):
@@ -24,15 +24,15 @@ class DailyNewsService: NewsService {
                     completion(.success(responseNewsDisplay))
                 } catch {
                     print("Error decoding JSON: \(error)")
-                    completion(.failure(.failedToDecode))
+                    completion(.failure(error))
                 }
-            case .failure( _ ):
-                completion(.failure(.failedRequestSomething))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
     
-    func requestSearchNews(url: String, completion: @escaping (Result<NewsModel, ErrorType>) -> Void) {
+    func requestSearchNews(url: String, completion: @escaping (Result<NewsModel, Error>) -> Void) {
         APIManager.shared.request(endpoint: url, method: .get, headers: nil, body: nil) { result in
             switch result {
             case .success(let data):
@@ -42,10 +42,10 @@ class DailyNewsService: NewsService {
                     completion(.success(responseSearchNewsDisplay))
                 } catch {
                     print("Error decoding JSON: \(error)")
-                    completion(.failure(.failedToDecode))
+                    completion(.failure(error))
                 }
-            case .failure( _ ):
-                completion(.failure(.failedRequestSomething))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }

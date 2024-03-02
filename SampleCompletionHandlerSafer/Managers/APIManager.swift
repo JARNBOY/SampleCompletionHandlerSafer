@@ -23,46 +23,47 @@ class APIManager {
             completion(.failure(ErrorType.failedInvalidURL))
             return
         }
-        
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        
         if let headers = headers {
             for (key, value) in headers {
                 request.addValue(value, forHTTPHeaderField: key)
             }
         }
-        
         if let body = body {
             request.httpBody = body
         }
         print("Request : \(request)")
-        
         let session = URLSession.shared
-        
         let task = session.dataTask(with: request) { data, response, error in
+            let result: Result<Data, Error>
+            
+            defer {
+                completion(result)
+            }
+            
             print("Data : \(String(describing: data))")
             print("Response : \(String(describing: response))")
             
             if let error = error {
-                completion(.failure(error))
+                result = .failure(error)
                 return
             }
             
             guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.failure(ErrorType.failedToResponse))
+                result = .failure(ErrorType.failedToResponse)
                 return
             }
             
             guard let data = data else {
-                completion(.failure(ErrorType.failedNilData))
+                result = .failure(ErrorType.failedNilData)
                 return
             }
             
             if (200..<300).contains(httpResponse.statusCode) {
-                completion(.success(data))
+                result = .success(data)
             } else {
-                completion(.failure(ErrorType.failedRequest(httpResponse: httpResponse)))
+                result = .failure(ErrorType.failedRequest(httpResponse: httpResponse))
             }
         }
         task.resume()

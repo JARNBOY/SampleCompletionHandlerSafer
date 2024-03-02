@@ -14,7 +14,7 @@ import UIKit
 
 protocol ViewWorkerInterface {
     func generateListURL(startIndex: Int, endIndex: Int, success:([String]) -> Void)
-    func requestNews(completion: @escaping (NewsModel?, ErrorType?) -> Void)
+    func requestNews(completion: @escaping (NewsModel?, Error?) -> Void)
 }
 
 class ViewWorker
@@ -32,7 +32,7 @@ class ViewWorker
         success(listImageURL)
     }
     
-    func requestNews(completion: @escaping (NewsModel?, ErrorType?) -> Void) {
+    func requestNews(completion: @escaping (NewsModel?, Error?) -> Void) {
         let countryParam: String = "country=us"
         let apiKeyParam: String = "apiKey=0bfb7217d29740c3a8ca13fda1c95a49" //, "apiKey=55c250f06e1144c29a3ec4d2530adbe5"
         let page: Int = 1
